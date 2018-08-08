@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        li{
+            list-style: none;
+        }
+        h1{
+            text-align: center;
+        }
+        #app{
+            width: 100%;
+            padding-left: 40%;
+            margin:150px auto;
+            background: plum;
+        }
+        #pick{
+            display: block;
+            width: 300px;
+            height: 25px;
+            /* background: palegoldenrod; */
+            margin-top: 10px;
+        }
+        .red{
+            background: #f00;
+        }
+    </style>
+</head>
+<body>
+    <h1>todolist</h1>
+    <hr>
+    <div id="app">
+
+    <form action="">
+        名称：<input type="text">   
+        <br>
+        价格：<input type="text" >
+        <button>增加</button>
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text">
+        <button>查询</button>
+    </form>     
+    <!-- <button @click="toogle">toogle</button> -->
+        <div :class="{red: wu.isRed}" v-for="(wu,index) in list" id="pick" @click="toogle(wu)"  >
+        {{wu.name}} {{wu.money}} 
+        </div>
+    <br>
+        <button @click="del($item,check)">删除选中</button>
+    总价：{{}}
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            username:'',
+            clsName: 'red',
+            list:[{
+                name:'衣服',
+                money:123,
+                isRed:false   
+            },{
+                name:'裤子',
+                money:654,
+                isRed:false
+            },{
+                name:'鞋子',
+                money:66,
+                isRed:false
+            },{
+                name:'iponex',
+                money:8888,
+                isRed:false
+            },{
+                name:'电脑',
+                money:999,
+                isRed:false
+            }],
+        },
+        methods: {
+                toogle(wu){
+                    wu.isRed = !wu.isRed;
+                    return wu.isred;
+                },
+                del(item){
+                    this.list.splice(item,1);
+                }
+            }
+    })
+    </script>
+</body>
+</html>
