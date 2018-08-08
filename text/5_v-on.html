@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div1{
+            width: 400px;
+            height: 400px;
+            background: #ff0;
+        }
+        #div2{
+            width: 200px;
+            height: 200px;
+            background-color: #0ff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- v-on:click == 简写@click -->
+    <div id="app">
+        <button v-on:click="add(2,$event)">add</button>
+        <!-- @click.once 只调用一次-->
+        <input type="text" @keyup="sum($event)" v-model="num">
+        <!-- @keyup.enter 回车键13-->
+        <h1>{{count}}</h1>
+
+
+        <div id="div1"  @click="clickDiv1">
+            <div id="div2"  @click="clickDiv2"></div>
+            <!-- @click.stop  阻止冒泡-->
+        </div>
+
+        <a href="http://www.baidu.com" @click.prevent="bd($event)">百度</a>
+        <!-- @click.prevent  阻止默认事件-->
+
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+    <script src="../vue.js"></script>
+    <script>
+        let vm = new Vue({  //vm-Vue
+            el:'#app',      //挂载元素   作用范围
+            data:{
+                msg:'hello world',
+                count: 0,
+                num: 4
+            },
+            methods:{
+                add(n,e){
+                    this.count += n;  //传参
+                },
+                sum(e){
+                    // console.log(e.keyCode);
+                    if(e.keyCode == 13){
+                        this.count += parseInt(this.num);
+                    }
+                },
+                clickDiv1(){
+                    console.log('div1');
+                },
+                clickDiv2(e){
+                    console.log('div2');
+                    e.stopPropagation();
+                },
+                bd(e){
+                    // e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

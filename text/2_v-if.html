@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    <div v-if="isLogin">司大大：测试</div>
+    <div v-else><a href="">请登录</a></div>
+
+    <div v-if="str =='a'">A</div>
+    <div v-else-if="str == 'B'">b</div>
+    <div v-else-if="str == 'c'">c</div>
+    <div v-else>d</div>
+
+    <div v-show>show</div>    <!-- display:none; 频繁切换 --> 
+
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+    <script src="../vue.js"></script>
+
+    <script>
+        let vm = new Vue({  //vm-Vue
+            el:'#app',      //挂载元素   作用范围
+            data:{
+                msg:'hello world',
+                isLogin:false,
+                str: 'A'
+            }
+        });
+    </script>
+</body>
+</html>
