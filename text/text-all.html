@@ -4,96 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>sdd</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
     <style>
-        *{
-            margin:0;
-            padding:0;
-        }
-        li{
-            list-style: none;
-        }
-        h1{
-            text-align: center;
-        }
-        #app{
-            width: 100%;
-            padding-left: 40%;
-            margin:150px auto;
-            background: plum;
-        }
-        #pick{
-            display: block;
-            width: 300px;
-            height: 25px;
-            /* background: palegoldenrod; */
-            margin-top: 10px;
-        }
         .red{
             background: #f00;
+        }
+        .add-form{
+            margin:20px 0 ;
         }
     </style>
 </head>
 <body>
+    <div id="app" class="text-center">
     <h1>todolist</h1>
     <hr>
-    <div id="app">
+    <form class="form-inline" @submit.prevent>
+            <div class="form-group">
+                <input v-model.trim="keyword" type="text" class="form-control" placeholder="请输入商品名称">
+            </div>
+            <button @click="search" type="submit" class="btn btn-default glyphicon glyphicon-search">搜索</button>
+        </form>
 
-    <form action="">
-        名称：<input type="text">   
-        <br>
-        价格：<input type="text" >
-        <button>增加</button>
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text">
-        <button>查询</button>
-    </form>     
-    <!-- <button @click="toogle">toogle</button> -->
-        <div :class="{red: wu.isRed}" v-for="(wu,index) in list" id="pick" @click="toogle(wu)"  >
-        {{wu.name}} {{wu.money}} 
-        </div>
-    <br>
-        <button @click="del($item,check)">删除选中</button>
-    总价：{{}}
+    <form class="form-inline add-form" @submit.prevent>
+            <div class="form-group">
+                <label for="product-name">商品名称</label>
+                <input v-model.trim="productName" type="text" class="form-control" id="product-name" placeholder="请输入商品名称">
+            </div>
+            <div class="form-group">
+                <label for="product-price">商品价格</label>
+                <input v-model.number="productPrice" type="number" class="form-control" id="product-price" placeholder="商品价格">
+            </div>
+            <button @click="add" type="submit" class="btn btn-default glyphicon glyphicon-plus">增加</button>
+        </form>
+
+        <table  class="table table-bordered">
+            <thead>
+                <tr class="warning">
+                    <td>选择</td>
+                    <td>商品名称</td>
+                    <td>商品价格</td>
+                    <td>删除</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr @click="select(product)" v-for="(product,index) in productList" :class="product.isRed?'red':''">
+                    <td>
+                        <input @click.stop type="checkbox" :value="index" v-model="checkedList" >
+                    </td>
+                    <td>{{product.productName}}</td>
+                    <td>{{product.productPrice}}</td>
+                    <td><button @click="del(index)" class="btn btn-warning glyphicon glyphicon-remove btn-xs" ></button></td>
+                </tr>
+                <tr>
+                        <td>
+                            <button @click="delChecked" type="button" class="btn btn-danger btn-xs">删除选中</button>
+                        </td>
+                        <td colspan="3">
+                            总价是：{{total}} 元
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
     </div>
+
+
+
+
+
+
     <script src="../vue.js"></script>
     <script>
-    let vm = new Vue({
+    new Vue({
         el:'#app',
         data:{
-            username:'',
-            clsName: 'red',
-            list:[{
-                name:'衣服',
-                money:123,
-                isRed:false   
-            },{
-                name:'裤子',
-                money:654,
-                isRed:false
-            },{
-                name:'鞋子',
-                money:66,
-                isRed:false
-            },{
-                name:'iponex',
-                money:8888,
-                isRed:false
-            },{
-                name:'电脑',
-                money:999,
-                isRed:false
-            }],
+            productList: [{
+                    productName: '衣服',
+                    productPrice: 123,
+                    isRed: false
+                }, {
+                    productName: '裤子',
+                    productPrice: 456,
+                    isRed: false
+                }, {
+                    productName: '鞋',
+                    productPrice: 222,
+                    isRed: false
+                }, {
+                    productName: '手机',
+                    productPrice: 555,
+                    isRed: false
+                }, {
+                    productName: '帽子',
+                    productPrice: 111,
+                    isRed: false
+                }],
+                checkedList:[],
+                productName:'',
+                productPrice:0,
+                keyword:''
         },
-        methods: {
-                toogle(wu){
-                    wu.isRed = !wu.isRed;
-                    return wu.isred;
-                },
-                del(item){
-                    this.list.splice(item,1);
-                }
+        methods:{
+            select(product){
+                product.isRed = !product.isRed;
+                this.total + product.productPrice
+            },
+            del(index){
+                this.productList.splice(index,1);
+            },
+            delChecked(){
+                this.productList = this.productList.filter((elem,index)=>{
+                    if(!this.checkedList.includes(index)){
+                        return elem;
+                    }
+                });
+                this.checkedList =[];
+            },
+            add(){
+                this.productList.push({
+                    productName:this.productName,
+                    productPrice:this.productPrice,
+                    isRed:false
+                });
+                this.productName='';
+                this.productPrice = 0;
+            },
+            search(){
+                this.productList = this.productList.filter((elem,index)=>{
+                    if(elem.productName.includes(this.keyword)){
+                        return elem;
+                    }
+                });
             }
+        },
+        computed:{
+            total(){
+                return this.productList.reduce((sum,elem) =>{
+                if(elem.isRed){
+                    sum += parseInt(elem.productPrice);
+                }
+                return sum;
+                },0);
+            }
+        }
     })
     </script>
 </body>
