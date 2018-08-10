@@ -50,7 +50,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr @click="select(product)" v-for="(product,index) in productList" :class="product.isRed?'red':''">
+                <tr @click="select(product)" v-for="(product,index) in productList" :class="product.isRed?'red':''" >
                     <td><input @click.stop type="checkbox" v-model="checkedList" :value="index"></td>
                     <td>{{product.productName}}</td>
                     <td>{{product.productPrice}}</td>
